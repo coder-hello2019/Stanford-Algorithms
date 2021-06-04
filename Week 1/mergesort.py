@@ -1,9 +1,8 @@
 # Merge sort implementation, done for practice
 
 def mergesort(unsorted):
-    print(f"Unsorted: {unsorted }")
     # base case - if the list has only 1 element, it is sorted
-    if len(unsorted) == 1:
+    if len(unsorted) <= 1:
         return unsorted
 
     # recursive case
@@ -37,8 +36,10 @@ def mergesort(unsorted):
                 sorted.append(sortedRight[0])
                 sortedRight = sortedRight[1:]
 
-        print(f"Sorted: {sorted}")
         return sorted
 
-mergesort([5,6,3,1])
-mergesort([94, 34231, 4, 6837, 45, 34])
+print(mergesort([5,6,3,1,5]))
+print(mergesort([94, 34231, 4, 6837, 45, 34]))
+print(mergesort([10, 9, 8, 7, 6, 5, 4, 3, 2, 1]))
+print(mergesort([]))
+print(mergesort([1,1,1,1,1,1]))
