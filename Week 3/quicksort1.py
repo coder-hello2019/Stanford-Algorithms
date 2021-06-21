@@ -8,12 +8,14 @@ import random
 def quicksort(unsorted):
 
     if len(unsorted) <= 1:
-        return unsorted
+        return (unsorted, 0)
 
     pivot = unsorted[0]
 
     #initiate i,j to the first array element which isn't the pivot
     i = 1
+
+    counter = len(unsorted) - 1
 
     # look at each element in the array except for the pivot and partition the array
     for j in range (1, len(unsorted)):
@@ -23,52 +25,40 @@ def quicksort(unsorted):
             pass
         # need to swap the jth element with the last element in the 'less than pivot' portion of the list and advance the i pointer
         elif unsorted[j] < pivot:
-            """
-            tmp = unsorted[j]
-            unsorted[j] = unsorted[i]
-            unsorted[i] = tmp
-            """
             unsorted[i], unsorted[j] = unsorted[j], unsorted[i]
             i += 1
 
     # put pivot in the correct place in the list by swapping the pivot with the last element of the 'smaller than pivot list'
-    """
-    tmp = unsorted[i - 1]
-    unsorted[i - 1] = pivot
-    unsorted[0] = tmp
-    """
-
     unsorted[i - 1], unsorted[0] = unsorted[0], unsorted[i - 1]
-
-    print(f"Partitioned: {unsorted}")
 
     # section of array with nums less than pivot
     leftList = unsorted[0:i - 1]
-    print(f"leftList: {leftList}")
     # section of array with nums greater than pivot
     rightList = unsorted[i:]
-    print(f"rightList: {rightList}")
 
     # call function recursively on the partitioned portions of the list
     # i think the prob here is that we're calling this on copies of the list as opposed to doing the partitioning sub-routine on the same list
     left = quicksort(leftList)
     right = quicksort(rightList)
 
+    counter += left[1]
+    counter += right[1]
+
+    leftList = left[0]
+    rightList = right[0]
+
     sorted = []
-    sorted.extend(left)
+    sorted.extend(leftList)
     sorted.append(pivot)
-    sorted.extend(right)
+    sorted.extend(rightList)
 
     """
-    print(f"Partitioned array: {unsorted}")
-    print(f"i is {i} which holds number {unsorted[i]}")
-    print(f"Left partition: {leftList}")
-    print(f"Right parttition: {rightList}")
+    if len(sorted) == 10:
+        print(f"Sorted array: {sorted}")
+        print(f"Counter: {counter}")
     """
-    print(f"Pivot: {pivot}")
-    print(f"Sorted array: {sorted}")
 
-    return sorted
+    return (sorted, counter)
 
 # function to generate test lists
 def testGenerator():
@@ -81,8 +71,23 @@ def testGenerator():
 
     return list
 
+
+"""
+Testcases
 test1 = [3,6,7,2,1]
 test2 = testGenerator()
 print(f"Test2: {test2}")
+"""
 
-quicksort(test2)
+def main():
+
+    qfile = open("quicksort.txt", "r")
+    numsList = []
+
+    for item in qfile.read().splitlines():
+        numsList.append(int(item))
+
+    qfile.close()
+    print(quicksort(numsList))
+
+main()
